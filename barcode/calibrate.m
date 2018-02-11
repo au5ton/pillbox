@@ -17,14 +17,15 @@ ray(1) = 0;
 %     ray(i) = readLightIntensity(mycolorsensor,'reflected');
 % end
 
-% while not black, go slowly until 'START' bar
+resetRotation(mymotor);
 start(mymotor);
 while true
-    disp(readLightIntensity(mycolorsensor, 'reflected'));
+    fprintf('light: %i', readLightIntensity(mycolorsensor, 'reflected'));
+    fprintf(' motor: %i', readRotation(mymotor));
+    fprintf('\n');
 end
 
-% while not black, keep going
-% on stop, measure distance
+
 
 
 disp(ray);

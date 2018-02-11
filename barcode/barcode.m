@@ -16,13 +16,22 @@ mymotor = motor(myev3,'A');
 
 mymotor.Speed = -10;
 ray(1) = 0;
-for i = 1:20
-    start(mymotor)
-    java.lang.Thread.sleep(250);
-    stop(mymotor);
-    java.lang.Thread.sleep(500);
-    ray(i) = readLightIntensity(mycolorsensor,'reflected');
+
+% while not black, go slowly until 'START' bar
+start(mymotor);
+while readLightIntensity(mycolorsensor, 'reflected') > 21
+    fprintf('.');
 end
+stop(mymotor); % motor will stop when light sensor reads <= X
+
+% while not black, keep going
+start(mymotor);
+while readLightIntensity(mycolorsensor, 'reflected') > 21
+    fprintf('x');
+end
+stop(mymotor); % motor will stop when light sensor reads <= X
+% on stop, measure distance
+
 disp(ray);
 
 % for i = 1:100
