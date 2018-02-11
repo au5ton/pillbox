@@ -20,8 +20,10 @@ end
 
 % measure
 while true
+    disp(readLightIntensity(mycolorsensor, 'reflected'));
     if readLightIntensity(mycolorsensor, 'reflected') < 21
         rots(i) = readRotation(mymotor);
+        disp(rots(i));
         i = i + 1;
         while readLightIntensity(mycolorsensor, 'reflected') < 21
             % wait until it passes
@@ -33,3 +35,5 @@ while true
     end
 end
 stop(mymotor); % motor will stop when light sensor reads <= X
+
+disp(rots);
