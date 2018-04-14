@@ -1,6 +1,6 @@
 % By submitting this assignment, I agree to the following:
-%  “Aggies do not lie, cheat, or steal, or tolerate those who do”
-%  “I have not given or received any unauthorized aid on this assignment”
+%  ï¿½Aggies do not lie, cheat, or steal, or tolerate those who doï¿½
+%  ï¿½I have not given or received any unauthorized aid on this assignmentï¿½
 % 
 % Name: Alexander Shung
 % Section:	112-542
@@ -103,12 +103,12 @@ end
 buttonValue = readTouch(button);
 end
 %prints out the result of the test
-fprintf("RED big = %d \n",master(2,1));
-fprintf("RED small = %d \n",master(2,2));
-fprintf("BLUE big = %d \n",master(3,1));
-fprintf("BLUE small = %d \n",master(3,2));
-fprintf("WHITE big = %d \n",master(1,1));
-fprintf("WHITE small = %d \n",master(1,2));
-fprintf("STEEL = %d \n",master(4,1));
-fprintf("HDPE = %d \n",master(4,2));
+fprintf('RED big = %d \n',master(2,1));
+fprintf('RED small = %d \n',master(2,2));
+fprintf('BLUE big = %d \n',master(3,1));
+fprintf('BLUE small = %d \n',master(3,2));
+fprintf('WHITE big = %d \n',master(1,1));
+fprintf('WHITE small = %d \n',master(1,2));
+fprintf('STEEL = %d \n',master(4,1));
+fprintf('HDPE = %d \n',master(4,2));
 end
