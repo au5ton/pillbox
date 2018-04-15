@@ -9,12 +9,14 @@
 
 keySet = {'red_big','red_small','blue_big','blue_small','white_big','white_small','steel','hdpe'};
 valueSet = [1 * 360, 2 * 360, 3 * 360, 4 * 360, 5 * 360, 6 * 360, 7 * 360, 8 * 360];
-MARBLES = containers.Map(keySet,valueSet)
+MARBLES = containers.Map(keySet,valueSet);
 % MARBLES('blue_big') => (3 * 360)
 
-function [] = deliverySystem(master, brick)
-    
+main();
+
+function [] = main()
     % prepare some variables
+    brick = legoev3('USB');
     conveyor = motor(brick,'A');
     pick = motor(brick,'B');
     conveyor_speed = 40;
@@ -28,7 +30,6 @@ function [] = deliverySystem(master, brick)
     for i = 1:length(queue)
         pop_slot(conveyor, pick, conveyor_speed, pick_speed, queue(i));
     end
-    
 end
 
 function [slots] = master_to_slots(master)
@@ -74,18 +75,6 @@ function [slots] = master_to_slots(master)
     % fprintf('HDPE = %d \n',master(4,2));
 end
 
-function [] = kick_marble(m, speed)
-    m.Speed = abs(speed);
-    start(m);
-    pause(0.25);
-    stop(m);
-    pause(1);
-    m.Speed = -1 * abs(speed);
-    start(m);
-    pause(0.25);
-    stop(m);
-end
-
 % set velocity to be negative to control direction
 
 function [] = pop_slot(conveyor, pick, con_v, pick_v, deg)
@@ -103,21 +92,27 @@ function [] = pop_slot(conveyor, pick, con_v, pick_v, deg)
     rotate_back_to_zero();
 end
 
+function [] = kick_marble(m, speed)
+    m.Speed = abs(speed);
+    start(m);
+    pause(0.25);
+    stop(m);
+    pause(1);
+    m.Speed = -1 * abs(speed);
+    start(m);
+    pause(0.25);
+    stop(m);
+end
+
 function [] = rotate_back_to_zero(m, velocity)
     m.Speed = velocity;
     if readRotation(m) > 0
         m.Speed = -1 * abs(velocity);
         start(m);
-        while(~(readRotation(m) > 0))
-            stop(m);
+        % basically stop at 0
+        while(readRotation(m) > 10)
+            % do nothing until while is broken
         end
-    elseif readRotation(m) < 0
-        m.Speed = abs(velocity);
-        start(m)
-        while(~(readRotation(m) < 0))
-            stop(m);
-        end
-    else
-        stop(m);
     end
+    stop(m);
 end
