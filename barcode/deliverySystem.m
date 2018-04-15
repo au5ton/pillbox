@@ -2,36 +2,122 @@
 %  �Aggies do not lie, cheat, or steal, or tolerate those who do�
 %  �I have not given or received any unauthorized aid on this assignment�
 % 
-% Name: Alexander Shung
+% Name: Austin Jackson
 % Section:	112-542
 % Assignment: Engineering Projectc
 % Date:	29 January
-% Reads barcodes that is fed through a motor and records the specific data
-% that the barcode represents
-function [] = deliverySystem(master, brick)
-    %connects the ev3 to MatLab
-    %brick = legoev3('USB');
 
+keySet = {'red_big','red_small','blue_big','blue_small','white_big','white_small','steel','hdpe'};
+valueSet = [1 * 360, 2 * 360, 3 * 360, 4 * 360, 5 * 360, 6 * 360, 7 * 360, 8 * 360];
+MARBLES = containers.Map(keySet,valueSet)
+% MARBLES('blue_big') => (3 * 360)
+
+function [] = deliverySystem(master, brick)
+    
+    % prepare some variables
     conveyor = motor(brick,'A');
     pick = motor(brick,'B');
-    conveyor.Speed=40;
-    time=[0,1,2,3,4,5,6,7];
-    pause(2)
-    start(conveyor)
-    pause(time(legoColorN))
-    stop(conveyor)
-    pick.Speed=60;
-    start(pick);
-    pause(.25)
-    stop(pick)
-    pause(1)
-    pick.Speed=-60;
-    start(pick);
-    pause(.25)
-    stop(pick)
+    conveyor_speed = 40;
+    pick_speed = 60;
+    resetRotation(conveyor); % conveyor should be 0 at starting position
 
-    conveyor.Speed=-40
-    start(conveyor)
-    pause(time(legoColorN))
-    stop(conveyor)
+    % process inventory into a queue for the conveyor to travel to
+    queue = master_to_slots(master);
+
+    % traverse the queue
+    for i = 1:length(queue)
+        pop_slot(conveyor, pick, conveyor_speed, pick_speed, queue(i));
+    end
+    
+end
+
+function [slots] = master_to_slots(master)
+
+    for r = 1:size(master,1)
+        for c = 1:size(master, 2)
+            for n = 1:master(r,c)
+                if(r == 1 && c == 1)
+                    slots = [slots MARBLES('white_big')];
+                end
+                if(r == 1 && c == 2)
+                    slots = [slots MARBLES('white_small')];
+                end
+                if(r == 2 && c == 1)
+                    slots = [slots MARBLES('red_big')];
+                end
+                if(r == 2 && c == 2)
+                    slots = [slots MARBLES('red_small')];
+                end
+                if(r == 3 && c == 1)
+                    slots = [slots MARBLES('blue_big')];
+                end
+                if(r == 3 && c == 2)
+                    slots = [slots MARBLES('blue_small')];
+                end
+                if(r == 4 && c == 1)
+                    slots = [slots MARBLES('steel')];
+                end
+                if(r == 4 && c == 2)
+                    slots = [slots MARBLES('hdpe')];
+                end
+            end
+        end
+    end
+
+    % fprintf('RED big = %d \n',master(2,1));
+    % fprintf('RED small = %d \n',master(2,2));
+    % fprintf('BLUE big = %d \n',master(3,1));
+    % fprintf('BLUE small = %d \n',master(3,2));
+    % fprintf('WHITE big = %d \n',master(1,1));
+    % fprintf('WHITE small = %d \n',master(1,2));
+    % fprintf('STEEL = %d \n',master(4,1));
+    % fprintf('HDPE = %d \n',master(4,2));
+end
+
+function [] = kick_marble(m, speed)
+    m.Speed = abs(speed);
+    start(m);
+    pause(0.25);
+    stop(m);
+    pause(1);
+    m.Speed = -1 * abs(speed);
+    start(m);
+    pause(0.25);
+    stop(m);
+end
+
+% set velocity to be negative to control direction
+
+function [] = pop_slot(conveyor, pick, con_v, pick_v, deg)
+
+    % ASSUMES THAT THE CONVEYOR IS ALREADY AT ZERO
+
+    conveyor.Speed = abs(con_v);
+    start(conveyor);
+    % readRotation should be around 0, going up to N degrees
+    while(readRotation(conveyor) < deg)
+        stop(conveyor);
+    end
+    pause(1); % wait before kicking because fuck it
+    kick_marble(pick, pick_v);
+    rotate_back_to_zero();
+end
+
+function [] = rotate_back_to_zero(m, velocity)
+    m.Speed = velocity;
+    if readRotation(m) > 0
+        m.Speed = -1 * abs(velocity);
+        start(m);
+        while(~(readRotation(m) > 0))
+            stop(m);
+        end
+    elseif readRotation(m) < 0
+        m.Speed = abs(velocity);
+        start(m)
+        while(~(readRotation(m) < 0))
+            stop(m);
+        end
+    else
+        stop(m);
+    end
 end
