@@ -21,9 +21,10 @@ BB=[15,30,42,12,21,32];
 STEEL=[9,9,5,7,7,4];
 HDPE=[20,23,15,18,21,13];
 COLORS = [WB;WS;RB;RS;BB;BS;HDPE;STEEL];
-THRESHOLD = -1;
+THRESHOLD = 0;
 NAME = ['big white\n','small white\n','big red\n','small red\n','big blue\n','small blue\n','HDPE\n','STEEL\n'];
 run = true;
+totalcalls = 0;
 resetRotation(stopMotor);
 while(abs(readRotation(stopMotor))<90)
     color = readColorRGB(colorMarble); % [1,2,3]
@@ -37,13 +38,15 @@ while(abs(readRotation(stopMotor))<90)
     end
     % if theres no more bright values (marble already passed)
     if(color(1)-holder(1)<THRESHOLD&&color(2)-holder(2)<THRESHOLD&&color(3)-holder(3)<THRESHOLD)%&&run)
+        totalcalls = totalcalls + 1;
+        disp(['marb passed ' num2str(totalcalls)])
         countdown = 3;
         i = 1;
         % traverse marbles
-        while(i<=size(COLORS,1))%&&run)
+        for i = 1:size(COLORS,1)
             fprintf('working %d\n',i);
             % traverse individual marble ranges
-            for(j = 1:size(COLORS,2)/2)
+            for j = 1:size(COLORS,2)/2
                 %disp(holder)
                 if(holder(j)<=COLORS(i,j)&&holder(j)>=COLORS(i,j+3))
                     countdown = countdown - 1;
@@ -53,7 +56,6 @@ while(abs(readRotation(stopMotor))<90)
                 fprintf(NAME(i));
                 data(ceil(i/2),mod(i-1,2)+1)=data(ceil(i/2),mod(i-1,2)+1)+1;
                 holder = zeros(1,3);
-%                 run = false;
                 pause(TIME);
                 break
             end
