@@ -34,9 +34,13 @@ end
 
 function [slots] = master_to_slots(master)
 
+    % for every row in master
     for r = 1:size(master,1)
+        % for every column in that row
         for c = 1:size(master, 2)
+            % for n amount in that individual cell
             for n = 1:master(r,c)
+                % append the cell rotation to the slots queue
                 if(r == 1 && c == 1)
                     slots = [slots MARBLES('white_big')];
                 end
@@ -75,8 +79,9 @@ function [slots] = master_to_slots(master)
     % fprintf('HDPE = %d \n',master(4,2));
 end
 
-% set velocity to be negative to control direction
 
+% only responsible for taking in the motors and speeds, ...
+% ...navigating to the `deg` degrees, calling kick_marble(), and resetting the arm back to the start
 function [] = pop_slot(conveyor, pick, con_v, pick_v, deg)
 
     % ASSUMES THAT THE CONVEYOR IS ALREADY AT ZERO
@@ -92,6 +97,7 @@ function [] = pop_slot(conveyor, pick, con_v, pick_v, deg)
     rotate_back_to_zero();
 end
 
+% only responsible for performing a kicking motion
 function [] = kick_marble(m, speed)
     m.Speed = abs(speed);
     start(m);
@@ -104,6 +110,7 @@ function [] = kick_marble(m, speed)
     stop(m);
 end
 
+% only responsible for putting the motor `m` back to 0
 function [] = rotate_back_to_zero(m, velocity)
     m.Speed = velocity;
     if readRotation(m) > 0
