@@ -111,4 +111,6 @@ function[master]= barCodeReader()
     fprintf('WHITE small = %d \n',master(1,2));
     fprintf('STEEL = %d \n',master(4,1));
     fprintf('HDPE = %d \n',master(4,2));
+
+    deliverySystem(master, barcodeBrick);
 end
