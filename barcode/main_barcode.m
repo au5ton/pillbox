@@ -9,6 +9,9 @@
 
 % start barcode scanner shit, will return the stuff
 %master = barCodeReader()
-master = [1 1; 0 1; 1 1; 0 1];
+% w ; r ; b; o
+master = [1 1; 1 1; 1 1; 1 1];
+%master = [0 0; 0 0; 0 1; 0 0];
+%master = [1 0; 0 0; 0 0; 0 0];
 
 deliverySystem(master);

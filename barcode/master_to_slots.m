@@ -1,7 +1,7 @@
 function [slots] = master_to_slots(master)
 
     keySet = {'red_big','red_small','blue_big','blue_small','white_big','white_small','steel','hdpe'};
-    valueSet = [148, 376, 302, 501, 216, 433, 66, 0];
+    valueSet = [156, 405, 332, 541, 240, 476, 85, 0];
     MARBLES = containers.Map(keySet,valueSet);
     slots = [];
     % MARBLES('blue_big') => (3 * 360)

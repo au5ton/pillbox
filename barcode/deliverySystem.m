@@ -15,9 +15,11 @@ function [] = deliverySystem(master)
     brick = legoev3('USB');
     conveyor = motor(brick,'A');
     pick = motor(brick,'B');
+    touch = touchSensor(brick);
     conveyor_speed = 40;
     pick_speed = 60;
     resetRotation(conveyor); % conveyor should be 0 at starting position
+    resetRotation(pick);
 
     % process inventory into a queue for the conveyor to travel to
     queue = master_to_slots(master);
@@ -25,26 +27,45 @@ function [] = deliverySystem(master)
 
     % traverse the queue
     for i = 1:length(queue)
-
+        disp(['queue item: ' num2str(i) ', travel to: ' num2str(queue(i))]);
+        if(readTouch(touch))
+            stop(conveyor);
+            stop(pick);
+            return
+        end
         % pop_slot.m
         conveyor.Speed = abs(conveyor_speed);
         start(conveyor);
         % readRotation should be around 0, going up to N degrees
         while(readRotation(conveyor) < queue(i))
-            stop(conveyor);
+            if(readTouch(touch))
+                stop(conveyor);
+                stop(pick);
+                return
+            end
         end
+        stop(conveyor);
         pause(1); % wait before kicking because fuck it
         
         % kick_marble.m begin
-        pick.Speed = abs(pick_speed);
+        pick_rot_distance = 60;
+        if(queue(i) > 460)
+            pick.Speed = 60;
+        else
+            pick.Speed = 55;
+        end
         start(pick);
-        pause(0.25);
+        while(readRotation(pick) < pick_rot_distance)
+            % do nothing
+        end
         stop(pick);
-        pause(1);
-        pick.Speed = -1 * abs(pick_speed);
+        pause(1)
+        pick.Speed=-15;
         start(pick);
-        pause(0.25);
-        stop(pick);
+        while(readRotation(pick) > 0)
+            % do nothing
+        end
+        stop(pick)
         % kick_marble.m end
         % rotate_back_to_zero.m begin
         conveyor.Speed = conveyor_speed;
@@ -52,14 +73,20 @@ function [] = deliverySystem(master)
             conveyor.Speed = -1 * abs(conveyor_speed);
             start(conveyor);
             % basically stop at 0
-            while(readRotation(conveyor) > 10)
+            while(readRotation(conveyor) > 0)
                 % do nothing until while is broken
+                if(readTouch(touch))
+                    stop(conveyor);
+                    stop(pick);
+                    return
+                end
             end
         end
         stop(conveyor);
         % rotate_back_to_zero.m end
 
     end
+    disp('finished with queue');
 end
 
 
