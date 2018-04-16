@@ -30,7 +30,7 @@ function [] = deliverySystem(master)
         conveyor.Speed = abs(conveyor_speed);
         start(conveyor);
         % readRotation should be around 0, going up to N degrees
-        while(readRotation(conveyor) < deg)
+        while(readRotation(conveyor) < queue(i))
             stop(conveyor);
         end
         pause(1); % wait before kicking because fuck it
