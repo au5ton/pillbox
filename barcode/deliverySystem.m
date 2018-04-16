@@ -27,7 +27,7 @@ function [] = deliverySystem(master)
     for i = 1:length(queue)
 
         % pop_slot.m
-        conveyor.Speed = abs(con_v);
+        conveyor.Speed = abs(conveyor_speed);
         start(conveyor);
         % readRotation should be around 0, going up to N degrees
         while(readRotation(conveyor) < deg)
