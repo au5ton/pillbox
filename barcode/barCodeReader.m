@@ -112,5 +112,10 @@ function[master]= barCodeReader()
     fprintf('STEEL = %d \n',master(4,1));
     fprintf('HDPE = %d \n',master(4,2));
 
-    deliverySystem(master, barcodeBrick);
+    barcodeBrick = [];
+    barcodeMotor = [];
+    barcode = [];
+    button = [];
+
+
 end
