@@ -7,6 +7,9 @@
 % Assignment: Engineering Projectc
 % Date:	29 January
 
+% example master: master = [1 1; 0 1; 1 1; 0 1];
+% example call: deliverySystem(master)
+
 function [] = deliverySystem(master)
     % prepare some variables
     brick = legoev3('USB');
