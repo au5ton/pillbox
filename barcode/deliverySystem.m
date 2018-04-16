@@ -25,7 +25,40 @@ function [] = deliverySystem(master)
 
     % traverse the queue
     for i = 1:length(queue)
-        pop_slot(conveyor, pick, conveyor_speed, pick_speed, queue(i));
+
+        % pop_slot.m
+        conveyor.Speed = abs(con_v);
+        start(conveyor);
+        % readRotation should be around 0, going up to N degrees
+        while(readRotation(conveyor) < deg)
+            stop(conveyor);
+        end
+        pause(1); % wait before kicking because fuck it
+        
+        % kick_marble.m begin
+        pick.Speed = abs(pick_speed);
+        start(pick);
+        pause(0.25);
+        stop(pick);
+        pause(1);
+        pick.Speed = -1 * abs(pick_speed);
+        start(pick);
+        pause(0.25);
+        stop(pick);
+        % kick_marble.m end
+        % rotate_back_to_zero.m begin
+        conveyor.Speed = conveyor_speed;
+        if readRotation(conveyor) > 0
+            conveyor.Speed = -1 * abs(conveyor_speed);
+            start(conveyor);
+            % basically stop at 0
+            while(readRotation(conveyor) > 10)
+                % do nothing until while is broken
+            end
+        end
+        stop(conveyor);
+        % rotate_back_to_zero.m end
+
     end
 end
 
