@@ -7,14 +7,7 @@
 % Assignment: Engineering Projectc
 % Date:	29 January
 
-keySet = {'red_big','red_small','blue_big','blue_small','white_big','white_small','steel','hdpe'};
-valueSet = [1 * 360, 2 * 360, 3 * 360, 4 * 360, 5 * 360, 6 * 360, 7 * 360, 8 * 360];
-MARBLES = containers.Map(keySet,valueSet);
-% MARBLES('blue_big') => (3 * 360)
-
-main();
-
-function [] = main()
+function [] = deliverySystem(master)
     % prepare some variables
     brick = legoev3('USB');
     conveyor = motor(brick,'A');
@@ -33,6 +26,11 @@ function [] = main()
 end
 
 function [slots] = master_to_slots(master)
+
+    keySet = {'red_big','red_small','blue_big','blue_small','white_big','white_small','steel','hdpe'};
+    valueSet = [1 * 360, 2 * 360, 3 * 360, 4 * 360, 5 * 360, 6 * 360, 7 * 360, 8 * 360];
+    MARBLES = containers.Map(keySet,valueSet);
+    % MARBLES('blue_big') => (3 * 360)
 
     % for every row in master
     for r = 1:size(master,1)
