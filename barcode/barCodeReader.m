@@ -16,7 +16,7 @@ function[master]= barCodeReader()
     %array that is used to as a placeholder for barcode data
     information = zeros(1,8);
     %sets the barcode motor as a motor found in port a on the EV brick
-    barcodeMotor = motor(barcodeBrick,'A');
+    barcodeMotor = motor(barcodeBrick,'C');
     %speed of the barcode motor
     barcodeMotor.Speed = -20;
     %constant of the diameter of the wheel
@@ -32,13 +32,13 @@ function[master]= barCodeReader()
     %name of color sensor used for barcode reading
     barcode = colorSensor(barcodeBrick);
     %button sensor used to control when the code starts
-    button = touchSensor(barcodeBrick);
+    button = touchSensor(barcodeBrick,2);
     %reads whether the button has been pushed to end the code
     buttonValue = readTouch(button);
     %keeps going until the button is pushed during the last reading of the
     %barcode
     while(buttonValue == 0)
-        %starts the barcode motor
+        %starts the barcode motor,
         start(barcodeMotor);
         %arbitrary big starting value
         light = 100;
@@ -116,6 +116,4 @@ function[master]= barCodeReader()
     barcodeMotor = [];
     barcode = [];
     button = [];
-
-
 end

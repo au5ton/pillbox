@@ -15,7 +15,7 @@ function [] = deliverySystem(master)
     brick = legoev3('USB');
     conveyor = motor(brick,'A');
     pick = motor(brick,'B');
-    touch = touchSensor(brick);
+    touch = touchSensor(brick, 4);
     conveyor_speed = 40;
     pick_speed = 60;
     resetRotation(conveyor); % conveyor should be 0 at starting position
@@ -27,7 +27,7 @@ function [] = deliverySystem(master)
 
     % traverse the queue
     for i = 1:length(queue)
-        disp(['queue item: ' num2str(i) ', travel to: ' num2str(queue(i))]);
+%         disp(['queue item: ' num2str(i) ', travel to: ' num2str(queue(i))]);
         if(readTouch(touch))
             stop(conveyor);
             stop(pick);
