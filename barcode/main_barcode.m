@@ -7,8 +7,6 @@
 % Assignment: Engineering Projectc
 % Date:	29 January
 
-% start barcode scanner shit, will return the stuff
-scanned = barCodeReader();
 inventory = [];
 % wait until inventory is filled
 disp('waiting until inventory is populated...');
@@ -20,6 +18,9 @@ while(true)
     pause(5);
 end
 disp('inventory is filled!')
+
+% start barcode scanner shit, will return the stuff
+scanned = barCodeReader();
 
 % check if inventory is capable of fullfilling the order
 delta = inventory - scanned;
