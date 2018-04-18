@@ -8,18 +8,47 @@
 % Date:	29 January
 
 % start barcode scanner shit, will return the stuff
-%master = barCodeReader()
-% w ; r ; b; o
-%master = [0 0; 0 0; 0 1; 0 0];
-master = [1 1; 1 1; 1 1; 1 1];
-fprintf('WHITE big = %d \n',master(1,1));
-fprintf('WHITE small = %d \n',master(1,2));
-fprintf('RED big = %d \n',master(2,1));
-fprintf('RED small = %d \n',master(2,2));
-fprintf('BLUE big = %d \n',master(3,1));
-fprintf('BLUE small = %d \n',master(3,2));
-fprintf('STEEL = %d \n',master(4,1));
-fprintf('HDPE = %d \n',master(4,2));
-pause(5);
-% master = barCodeReader();
-deliverySystem(master);
+scanned = barCodeReader();
+inventory = [];
+% wait until inventory is filled
+disp('waiting until inventory is populated...');
+while(true)
+    if(~isempty(http_get_inventory()))
+        inventory = http_get_inventory();
+        break
+    end
+    pause(5);
+end
+disp('inventory is filled!')
+
+% check if inventory is capable of fullfilling the order
+delta = inventory - scanned;
+no_negative = true;
+for r = 1:size(delta,1)
+    for c = 1:size(delta,2)
+        if delta(r,c) < 0
+            no_negative = false;
+        end
+    end
+end
+if no_negative == false
+    % error sound
+    brick = legoev3('usb');
+    for i = 1:5
+        for freq = 2500:-50:350
+            %fprintf('freq: %d\n',freq);
+            % playTone(brick, freq, dur, vol)
+            playTone(brick,freq,0.015,10.0)
+            pause(0.015);
+        end
+        for freq = 350:50:2500
+            %fprintf('freq: %d\n',freq);
+            % playTone(brick, freq, dur, vol)
+            playTone(brick,freq,0.015,10.0)
+            pause(0.015);
+        end
+    end
+else
+    deliverySystem(scanned);
+end
+
