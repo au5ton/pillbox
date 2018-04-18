@@ -88,6 +88,10 @@ function [] = deliverySystem(master)
 
     end
     disp('finished with queue');
+    brick = [];
+    conveyor = [];
+    pick = [];
+    touch = [];
 end
 
 
