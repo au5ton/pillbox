@@ -23,7 +23,8 @@ function [] = deliverySystem(master)
 
     % process inventory into a queue for the conveyor to travel to
     queue = master_to_slots(master);
-    disp(queue);
+    %disp(queue);
+    queue,;
 
     % traverse the queue
     for i = 1:length(queue)
