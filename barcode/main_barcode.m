@@ -9,18 +9,22 @@
 
 inventory = [];
 % wait until inventory is filled
-disp('waiting until inventory is populated...');
+fprintf('waiting until inventory is populated...');
 while(true)
     if(~isempty(http_get_inventory()))
         inventory = http_get_inventory();
         break
+    else
+        fprintf('.');
     end
     pause(5);
 end
-disp('inventory is filled!')
+fprintf('\ninventory is filled!\n');
+inventory,;
 
 % start barcode scanner shit, will return the stuff
 scanned = barCodeReader();
+scanned,;
 
 % check if inventory is capable of fullfilling the order
 delta = inventory - scanned;

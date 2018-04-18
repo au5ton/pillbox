@@ -6,8 +6,9 @@
 % Section:	112-542
 % Assignment: Engineering Projectc
 % Date:	29 January
-
+http_set_inventory([]);
 measured_marbles = DispenserIntended();
+http_set_inventory(measured_marbles);
 % fprintf("WHITE big = %d \n",measured_marbles(1,1));
 % fprintf("WHITE small = %d \n",measured_marbles(1,2));
 % fprintf("RED big = %d \n",measured_marbles(2,1));
