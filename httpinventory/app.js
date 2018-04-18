@@ -8,6 +8,10 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 
 var THE_INVENTORY = [1, 2, 3];
 
+app.get('/', (req, res) => {
+    res.json('hello world');
+})
+
 // responds with the inventory JSON encoded
 app.post('/getinventory', (req, res) => {
   res.json(THE_INVENTORY);
