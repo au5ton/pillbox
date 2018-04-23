@@ -24,7 +24,7 @@ function[master]= barCodeReader()
     %the thickness of the barcode lines
     DISTANCE = 1;
     %the amount that light needs to be under to be considered a black stripe
-    THRESHOLD = 18;
+    THRESHOLD = 10;
     %the amount of degrees of that the motor has moved
     rotation = 0;
     %formula to convert the thickness of a stripe to a degree for the motor

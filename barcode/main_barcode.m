@@ -23,10 +23,12 @@ fprintf('\ninventory is filled!\n');
 inventory,;
 
 % start barcode scanner shit, will return the stuff
-scanned = barCodeReader();
+%scanned = barCodeReader();
+scanned = [2 0; 3 2; 1 2; 1 0];
+scanned = [1 1; 1 1; 1 1; 1 1];
 scanned,;
 
-for n = 1:3
+for n = 1:1
     % check if inventory is capable of fullfilling the order
     delta = inventory - scanned;
     inventory = inventory - scanned;

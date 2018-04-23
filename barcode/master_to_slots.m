@@ -1,7 +1,7 @@
 function [slots] = master_to_slots(master)
     g = -5;
     keySet = {'red_big','red_small','blue_big','blue_small','white_big','white_small','steel','hdpe'};
-    valueSet = [190-28+g, 426-27+g, 330-11+g, 558-13+g, 250-13+g, 490-20+g, 97-15+g, 0-7];
+    valueSet = [190-28+g, 426-21+g, 330-8+g, 558-8+g, 250-13+g, 490-7+g, 97-15+g, 0-7];
     %           R     r    B    b     W   w     S   H
     MARBLES = containers.Map(keySet,valueSet);
     slots = [];
